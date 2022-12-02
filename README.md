@@ -1,60 +1,65 @@
-# ViteJs + JS + Webflow = ❤️
 
-This is a basic setup with [ViteJs](https://vitejs.dev/) that you can use for your Webflow website.
-`jQuery` is already installed and declared as an external dependency.
+# Vite + JS + Webflow & DO Spaces
+Bundle all your libraries, custom code & assets for your Webflow projects using Vite, and automatically upload the bundle to DigitalOcean Spaces upon push.
 
-I'm using [Netlify](https://www.netlify.com/) to build and host my code because it's easy to use, free, and has serverless functions out of the box. Feel free to use your favorite CDN.
+### Configuring DigitalOcean Credentials
+1.  Retrieve DigitalOcean access & secret keys  [here](https://cloud.digitalocean.com/account/api/tokens).
+2.  Add  `ACCESS_KEY`,  `SECRET_KEY`,  `SPACE_NAME`,  `SPACE_REGION`  to repository action secrets.
+3.  Specify the directory to save files in `upload.yml`.
 
-**If you prefer TypeScript you can use [this template](https://github.com/armandsalle/vite-typescript-webflow)**
+###  Automatically Load Assets from Localhost
+Use this script to automatically load your script from the local server while you're developing, or pull from the CDN when you're not.
 
-<br />
+```jsx
+  <script>
+    (function () {
+      const LOCALHOST_URL = [
+        'http://localhost:3000/@vite/client',
+        'http://localhost:3000/src/main.js',
+      ]
+      const PROD_URL = ['https://MY-PROJECT.netlify.app/main.js']
 
-## Live demo
+      function createScripts(arr, isDevMode) {
+        return arr.map(function (url) {
+          const s = document.createElement('script')
+          s.src = url
 
-You can find a simple example of a Webflow site using this setup [here](https://vite-javascript.webflow.io/). The code is hosted on Netlify [here](https://vite-javascript-webflow.netlify.app/main.js). If you want to see the Webflow preview, it's [here](https://preview.webflow.com/preview/vite-javascript?utm_medium=preview_link&utm_source=designer&utm_content=vite-javascript&preview=65fac120c82ee6a81780f5a5cd5ecc59&workflow=preview) 👍
+          if (isDevMode) {
+            s.type = 'module'
+          }
 
-<br />
+          return s
+        })
+      }
 
-## How to use with Webflow
+      function insertScript(scriptArr) {
+        scriptArr.forEach(function (script) {
+          document.body.appendChild(script)
+        })
+      }
 
-### 🇫🇷 French
-The doc is [here](https://github.com/armandsalle/vite-javascript-webflow/blob/main/HowToUse_JS_FR.md) 
+      const localhostScripts = createScripts(LOCALHOST_URL, true)
+      const prodScripts = createScripts(PROD_URL, false)
 
-### 🇬🇧 English
-The doc is [here](https://github.com/armandsalle/vite-javascript-webflow/blob/main/HowToUse_JS_EN.md) 
+      let choosedScripts = null
 
-<br />
+      fetch(LOCALHOST_URL[0], {})
+        .then(() => {
+          choosedScripts = localhostScripts
+        })
+        .catch((e) => {
+          choosedScripts = prodScripts
+          console.error(e)
+        })
+        .finally(() => {
+          if (choosedScripts) {
+            insertScript(choosedScripts)
 
-## Building and running on localhost
+            return
+          }
 
-This project is using `yarn`.
-
-First, install dependencies:
-
-```sh
-yarn
-```
-
-To launch a local dev server:
-
-```sh
-yarn dev
-```
-
-To create a production build:
-
-```sh
-yarn build
-```
-
-To clean the local `/dist` folder:
-
-```sh
-yarn clean
-```
-
-To lint the code with ESLint and Prettier:
-
-```sh
-yarn lint:fix
-```
+          console.error('something went wrong, no scripts loaded')
+        })
+    })()
+  </script>
+  ```
