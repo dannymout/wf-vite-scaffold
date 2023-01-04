@@ -5,4 +5,4 @@ dist-ssr
 *.local
 .env
 .eslintcache
-yarn-error.log
+npm-debug.log
