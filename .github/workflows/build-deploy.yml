@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repoa
+      - name: Checkout repos
         uses: actions/checkout@v2
 
       - name: Setup Node
@@ -19,10 +19,10 @@ jobs:
           node-version: 16
 
       - name: Install dependencies
-        uses: mskelton/setup-yarn@v1
+        run: npm i
 
       - name: Build project
-        run: yarn build
+        run: npm run build
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v2
