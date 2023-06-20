@@ -1,9 +1,6 @@
 name: Build & Deploy
 
-on:
-  push:
-    branches:
-      - main
+on: push
 jobs:
   build:
     name: Build
@@ -48,4 +45,4 @@ jobs:
           space_name: ${{ secrets.SPACE_NAME }}
           space_region: ${{ secrets.SPACE_REGION }}
           source: ./dist
-          out_dir: /
+          out_dir: ${{ vars.OUTPUT_DIRECTORY }}/${{ github.ref_name }}
