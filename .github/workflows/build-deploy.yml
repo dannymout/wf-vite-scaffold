@@ -8,10 +8,10 @@ jobs:
 
     steps:
       - name: Checkout repos
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: 16
 
@@ -22,7 +22,7 @@ jobs:
         run: npm run build
 
       - name: Upload production-ready build files
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: production-files
           path: ./dist
@@ -34,11 +34,11 @@ jobs:
 
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: production-files
           path: ./dist
-      - uses: BetaHuhn/do-spaces-action@v2
+      - uses: BetaHuhn/do-spaces-action@v2.0.112
         with:
           access_key: ${{ secrets.ACCESS_KEY}}
           secret_key: ${{ secrets.SECRET_KEY }}
