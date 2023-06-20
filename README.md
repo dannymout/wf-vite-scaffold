@@ -5,7 +5,7 @@ Bundle all your libraries, custom code & assets for your Webflow projects using 
 ### Configuring DigitalOcean Credentials
 1.  Retrieve DigitalOcean access & secret keys  [here](https://cloud.digitalocean.com/account/api/tokens).
 2.  Add  `ACCESS_KEY`,  `SECRET_KEY`,  `SPACE_NAME`,  `SPACE_REGION`  to repository action secrets.
-3.  Specify the directory to save files in `upload.yml`.
+3.  Set `OUTPUT_DIRECTORY` for DO in Actions variables.
 
 ###  Automatically Load Assets from Localhost
 Use this script to automatically load your script from the local server while you're developing, or pull from the CDN when you're not.
