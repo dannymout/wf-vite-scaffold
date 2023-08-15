@@ -14,8 +14,8 @@ Use this script to automatically load your script from the local server while yo
   <script>
     (function () {
       const LOCALHOST_URL = [
-        'http://localhost:3000/@vite/client',
-        'http://localhost:3000/src/main.js',
+        'https://localhost:3000/@vite/client',
+        'https://localhost:3000/src/main.js',
       ]
       const PROD_URL = ['https://MY-PROJECT.netlify.app/main.js']
 
