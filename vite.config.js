@@ -4,7 +4,10 @@ import mkcert from 'vite-plugin-mkcert'
 
 // vite.config.js
 export default defineConfig({
-    plugins: [mkcert(), eslintPlugin({ cache: false })],
+    plugins: [
+        mkcert(),
+        // eslintPlugin({ cache: false })
+    ],
     server: {
         host: 'localhost',
         cors: {
