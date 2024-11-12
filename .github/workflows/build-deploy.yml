@@ -2,47 +2,47 @@ name: Build & Deploy
 
 on: push
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
+    build:
+        name: Build
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repos
-        uses: actions/checkout@v3
+        steps:
+            - name: Checkout repos
+              uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 'lts/*'
 
-      - name: Install dependencies
-        run: npm i
+            - name: Install dependencies
+              run: npm i
 
-      - name: Build project
-        run: npm run build
+            - name: Build project
+              run: npm run build
 
-      - name: Upload production-ready build files
-        uses: actions/upload-artifact@v3
-        with:
-          name: production-files
-          path: ./dist
+            - name: Upload production-ready build files
+              uses: actions/upload-artifact@v4
+              with:
+                  name: production-files
+                  path: ./dist
 
-  deploy:
-    name: Deploy
-    needs: build
-    runs-on: ubuntu-latest
+    deploy:
+        name: Deploy
+        needs: build
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: production-files
-          path: ./dist
-      - uses: BetaHuhn/do-spaces-action@v2.0.112
-        with:
-          access_key: ${{ secrets.ACCESS_KEY}}
-          secret_key: ${{ secrets.SECRET_KEY }}
-          space_name: ${{ secrets.SPACE_NAME }}
-          space_region: ${{ secrets.SPACE_REGION }}
-          source: ./dist
-          out_dir: ${{ vars.OUTPUT_DIRECTORY }}/${{ github.ref_name }}
+        steps:
+            - name: Download artifact
+              uses: actions/download-artifact@v4
+              with:
+                  name: production-files
+                  path: ./dist
+            - uses: BetaHuhn/do-spaces-action@v2
+              with:
+                  access_key: ${{ secrets.ACCESS_KEY}}
+                  secret_key: ${{ secrets.SECRET_KEY }}
+                  space_name: ${{ secrets.SPACE_NAME }}
+                  space_region: ${{ secrets.SPACE_REGION }}
+                  source: ./dist
+                  out_dir: ${{ vars.OUTPUT_DIRECTORY }}/${{ github.ref_name }}
