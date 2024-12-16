@@ -38,9 +38,11 @@ jobs:
               with:
                   name: production-files
                   path: ./dist
-            - uses: BetaHuhn/do-spaces-action@v2
+            - uses: dannymout/do-spaces-action@cdn-purge-feature
               with:
-                  access_key: ${{ secrets.ACCESS_KEY}}
+                  # purge_cdn: true
+                  # do_token: ${{ secrets.DO_TOKEN }}
+                  access_key: ${{ secrets.ACCESS_KEY }}
                   secret_key: ${{ secrets.SECRET_KEY }}
                   space_name: ${{ secrets.SPACE_NAME }}
                   space_region: ${{ secrets.SPACE_REGION }}
